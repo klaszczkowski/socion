@@ -1,0 +1,7 @@
+{
+  "name": "socion",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
