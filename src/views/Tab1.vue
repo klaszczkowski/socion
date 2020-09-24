@@ -15,14 +15,14 @@
             <td></td>
 
             <td v-for="type in types" :key="type.id">
-              {{type.socionicsName}} / <span class="three">{{ type.dich3 }}</span>
+              {{type.socionicsName}} / <span class="three">{{ type.dich2 }}</span>
             </td>
           </tr>
 
         </thead>
 
         <tbody>
-          <tr :class="{'three': dichotomy.traits.length == 3}" v-for="dichotomy in dichotomies" :key="dichotomy.id">
+          <tr :class="{'three': dichotomy.traits.length == 2}" v-for="dichotomy in dichotomies" :key="dichotomy.id">
             <td><span class="three2">{{ dichotomy.valid }}</span> / {{ dichotomy.null }} / {{ dichotomy.id }}</td>
             <td v-for="type in types" :key="type.id">
               {{ type.dichotomies[dichotomy.valid] }}
@@ -65,7 +65,7 @@ export default {
 
       const traitsIndicatorsCount = dichotomyData.traits.length;
 
-      if (traitsIndicatorsCount > 1) {
+      if (traitsIndicatorsCount == 3) {
         const comparisonResults = [];
         let i;
         for (i = 0; i<traitsIndicatorsCount; i++) {
@@ -76,21 +76,44 @@ export default {
           }
         }
 
-        if (traitsIndicatorsCount == 3) {
-          console.group('label');
-          console.log(socionicsName);
-          console.log(dichotomyId);
-          console.log(comparisonResults);
-          console.log(this.isAllComparisonResultsSame(comparisonResults));
-          console.groupEnd();
+        if (this.isAllComparisonResultsSame(comparisonResults) && comparisonResults[0] == true) {
+          toReturn = true;
+        } else if (this.isAllComparisonResultsSame(comparisonResults) && comparisonResults[0] == false) {
+          toReturn = false;
+        } else if (!this.isAllComparisonResultsSame(comparisonResults)) {
+          toReturn = !this.isAnyDoubleDichotomyTrue(dichotomyData.traits, typeData.traits);
         }
 
-        toReturn = this.isAllComparisonResultsSame(comparisonResults);
       } else if (traitsIndicatorsCount == 1) {
         toReturn = typeData.traits[dichotomyData.traits[0]] == true;
+      } else if (traitsIndicatorsCount == 2) {
+        const comparisonResults = [];
+        let i;
+        for (i = 0; i<traitsIndicatorsCount; i++) {
+          if (typeData.traits[dichotomyData.traits[i]] == true) {
+            comparisonResults.push(true);
+          } else {
+            comparisonResults.push(false);
+          }
+        }
+
+        if (this.isAllComparisonResultsSame(comparisonResults)) {
+          toReturn = true;
+        }
+      } else {
+        toReturn = true;
       }
 
       return toReturn;
+    },
+    isAnyDoubleDichotomyTrue(dichotomyDataTraits, typeDataTraits) {
+      const singleDichotomiesInTrueState = [];
+      for (const trait of dichotomyDataTraits) {
+        if (typeDataTraits[trait] == true) {
+          singleDichotomiesInTrueState.push(trait)
+        }
+      }
+      return singleDichotomiesInTrueState.length >= 2;
     },
     isAllComparisonResultsSame(results) {
       const firstResult = results[0];
@@ -127,7 +150,8 @@ export default {
       sensing: true,
       feeling: true,
       rational: false,
-      dich3: 'negativist	judicious	subjectivist	process'
+      dich3: 'negativist	judicious	subjectivist	process',
+      dich2: 'carefree	yielding	dynamic	democratic	strategic	emotivist'
     },
     {
       id: '1',
@@ -143,7 +167,8 @@ export default {
       sensing: false,
       feeling: false,
       rational: false,
-      dich3: 'positivist	judicious	subjectivist	process'
+      dich3: 'positivist	judicious	subjectivist	process',
+      dich2: 'carefree	yielding	static	democratic	tactical	constructivist'
     },
     {
       id: '2',
@@ -159,7 +184,8 @@ export default {
       sensing: false,
       feeling: false,
       rational: true,
-      dich3: 'negativist	judicious	subjectivist	result'
+      dich3: 'negativist	judicious	subjectivist	result',
+      dich2: 'farsighted	obstinate	static	democratic	strategic	emotivist'
     },
     {
       id: '3',
@@ -175,7 +201,8 @@ export default {
       sensing: true,
       feeling: true,
       rational: true,
-      dich3: 'positivist	judicious	subjectivist	result'
+      dich3: 'positivist	judicious	subjectivist	result',
+      dich2: 'farsighted	obstinate	dynamic	democratic	tactical	constructivist'
     },
     {
       id: '4',
@@ -191,7 +218,8 @@ export default {
       sensing: true,
       feeling: false,
       rational: true,
-      dich3: 'positivist	decisive	subjectivist	process'
+      dich3: 'positivist	decisive	subjectivist	process',
+      dich2: 'carefree	obstinate	static	aristocratic	tactical	emotivist'
     },
     {
       id: '5',
@@ -207,7 +235,8 @@ export default {
       sensing: false,
       feeling: true,
       rational: true,
-      dich3: 'negativist	decisive	subjectivist	process'
+      dich3: 'negativist	decisive	subjectivist	process',
+      dich2: 'carefree	obstinate	dynamic	aristocratic	strategic	constructivist'
     },
     {
       id: '6',
@@ -223,7 +252,8 @@ export default {
       sensing: false,
       feeling: true,
       rational: false,
-      dich3: 'positivist	decisive	subjectivist	result'
+      dich3: 'positivist	decisive	subjectivist	result',
+      dich2: 'farsighted	yielding	dynamic	aristocratic	tactical	emotivist'
     },
     {
       id: '7',
@@ -239,7 +269,8 @@ export default {
       sensing: true,
       feeling: false,
       rational: false,
-      dich3: 'negativist	decisive	subjectivist	result'
+      dich3: 'negativist	decisive	subjectivist	result',
+      dich2: 'farsighted	yielding	static	aristocratic	strategic	constructivist'
     },
     {
       id: '8',
@@ -255,7 +286,8 @@ export default {
       sensing: false,
       feeling: false,
       rational: false,
-      dich3: 'negativist	decisive	objectivist	process'
+      dich3: 'negativist	decisive	objectivist	process',
+      dich2: 'farsighted	obstinate	dynamic	democratic	tactical	constructivist'
     },
     {
       id: '9',
@@ -271,7 +303,8 @@ export default {
       sensing: true,
       feeling: true,
       rational: false,
-      dich3: 'positivist	decisive	objectivist	process'
+      dich3: 'positivist	decisive	objectivist	process',
+      dich2: 'farsighted	obstinate	static	democratic	strategic	emotivist'
     },
     {
       id: '10',
@@ -287,7 +320,8 @@ export default {
       sensing: true,
       feeling: true,
       rational: true,
-      dich3: 'negativist	decisive	objectivist	result'
+      dich3: 'negativist	decisive	objectivist	result',
+      dich2: 'carefree	yielding	static	democratic	tactical	constructivist'
     },
     {
       id: '11',
@@ -303,7 +337,8 @@ export default {
       sensing: false,
       feeling: false,
       rational: true,
-      dich3: 'positivist	decisive	objectivist	result'
+      dich3: 'positivist	decisive	objectivist	result',
+      dich2: 'carefree	yielding	dynamic	democratic	strategic	emotivist'
     },
     {
       id: '12',
@@ -319,7 +354,8 @@ export default {
       sensing: true,
       feeling: false,
       rational: true,
-      dich3: 'negativist	judicious	objectivist	process'
+      dich3: 'negativist	judicious	objectivist	process',
+      dich2: 'farsighted	yielding	dynamic	aristocratic	tactical	emotivist'
     },
     {
       id: '13',
@@ -335,7 +371,8 @@ export default {
       sensing: false,
       feeling: true,
       rational: true,
-      dich3: 'positivist	judicious	objectivist	process'
+      dich3: 'positivist	judicious	objectivist	process',
+      dich2: 'farsighted	yielding	static	aristocratic	strategic	constructivist'
     },
     {
       id: '14',
@@ -351,7 +388,8 @@ export default {
       sensing: false,
       feeling: true,
       rational: false,
-      dich3: 'negativist	judicious	objectivist	result'
+      dich3: 'negativist	judicious	objectivist	result',
+      dich2: 'carefree	obstinate	static	aristocratic	tactical	emotivist'
     },
     {
       id: '15',
@@ -367,7 +405,8 @@ export default {
       sensing: true,
       feeling: false,
       rational: false,
-      dich3: 'positivist	judicious	objectivist	result'
+      dich3: 'positivist	judicious	objectivist	result',
+      dich2: 'carefree	obstinate	dynamic	aristocratic	strategic	constructivist'
     }
   ];
 
