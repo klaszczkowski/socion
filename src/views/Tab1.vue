@@ -1,10 +1,5 @@
 <template>
   <ion-page>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Tab 1</ion-title>
-      </ion-toolbar>
-    </ion-header>
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
@@ -20,15 +15,15 @@
             <td></td>
 
             <td v-for="type in types" :key="type.id">
-              {{type.socionicsName}}
+              {{type.socionicsName}} / <span class="three">{{ type.dich3 }}</span>
             </td>
           </tr>
 
         </thead>
 
         <tbody>
-          <tr v-for="dichotomy in dichotomies" :key="dichotomy.id">
-            <td>{{ dichotomy.valid }} / {{ dichotomy.null }}</td>
+          <tr :class="{'three': dichotomy.traits.length == 3}" v-for="dichotomy in dichotomies" :key="dichotomy.id">
+            <td><span class="three2">{{ dichotomy.valid }}</span> / {{ dichotomy.null }} / {{ dichotomy.id }}</td>
             <td v-for="type in types" :key="type.id">
               {{ type.dichotomies[dichotomy.valid] }}
             </td>
@@ -81,6 +76,15 @@ export default {
           }
         }
 
+        if (traitsIndicatorsCount == 3) {
+          console.group('label');
+          console.log(socionicsName);
+          console.log(dichotomyId);
+          console.log(comparisonResults);
+          console.log(this.isAllComparisonResultsSame(comparisonResults));
+          console.groupEnd();
+        }
+
         toReturn = this.isAllComparisonResultsSame(comparisonResults);
       } else if (traitsIndicatorsCount == 1) {
         toReturn = typeData.traits[dichotomyData.traits[0]] == true;
@@ -122,7 +126,8 @@ export default {
       introverted: true,
       sensing: true,
       feeling: true,
-      rational: false
+      rational: false,
+      dich3: 'negativist	judicious	subjectivist	process'
     },
     {
       id: '1',
@@ -137,7 +142,8 @@ export default {
       introverted: false,
       sensing: false,
       feeling: false,
-      rational: false
+      rational: false,
+      dich3: 'positivist	judicious	subjectivist	process'
     },
     {
       id: '2',
@@ -152,7 +158,8 @@ export default {
       introverted: true,
       sensing: false,
       feeling: false,
-      rational: true
+      rational: true,
+      dich3: 'negativist	judicious	subjectivist	result'
     },
     {
       id: '3',
@@ -167,7 +174,8 @@ export default {
       introverted: false,
       sensing: true,
       feeling: true,
-      rational: true
+      rational: true,
+      dich3: 'positivist	judicious	subjectivist	result'
     },
     {
       id: '4',
@@ -182,7 +190,8 @@ export default {
       introverted: true,
       sensing: true,
       feeling: false,
-      rational: true
+      rational: true,
+      dich3: 'positivist	decisive	subjectivist	process'
     },
     {
       id: '5',
@@ -197,7 +206,8 @@ export default {
       introverted: false,
       sensing: false,
       feeling: true,
-      rational: true
+      rational: true,
+      dich3: 'negativist	decisive	subjectivist	process'
     },
     {
       id: '6',
@@ -212,7 +222,8 @@ export default {
       introverted: true,
       sensing: false,
       feeling: true,
-      rational: false
+      rational: false,
+      dich3: 'positivist	decisive	subjectivist	result'
     },
     {
       id: '7',
@@ -227,7 +238,8 @@ export default {
       introverted: false,
       sensing: true,
       feeling: false,
-      rational: false
+      rational: false,
+      dich3: 'negativist	decisive	subjectivist	result'
     },
     {
       id: '8',
@@ -242,7 +254,8 @@ export default {
       introverted: true,
       sensing: false,
       feeling: false,
-      rational: false
+      rational: false,
+      dich3: 'negativist	decisive	objectivist	process'
     },
     {
       id: '9',
@@ -257,7 +270,8 @@ export default {
       introverted: false,
       sensing: true,
       feeling: true,
-      rational: false
+      rational: false,
+      dich3: 'positivist	decisive	objectivist	process'
     },
     {
       id: '10',
@@ -272,7 +286,8 @@ export default {
       introverted: true,
       sensing: true,
       feeling: true,
-      rational: true
+      rational: true,
+      dich3: 'negativist	decisive	objectivist	result'
     },
     {
       id: '11',
@@ -287,7 +302,8 @@ export default {
       introverted: false,
       sensing: false,
       feeling: false,
-      rational: true
+      rational: true,
+      dich3: 'positivist	decisive	objectivist	result'
     },
     {
       id: '12',
@@ -302,7 +318,8 @@ export default {
       introverted: false,
       sensing: true,
       feeling: false,
-      rational: true
+      rational: true,
+      dich3: 'negativist	judicious	objectivist	process'
     },
     {
       id: '13',
@@ -317,7 +334,8 @@ export default {
       introverted: true,
       sensing: false,
       feeling: true,
-      rational: true
+      rational: true,
+      dich3: 'positivist	judicious	objectivist	process'
     },
     {
       id: '14',
@@ -332,7 +350,8 @@ export default {
       introverted: false,
       sensing: false,
       feeling: true,
-      rational: false
+      rational: false,
+      dich3: 'negativist	judicious	objectivist	result'
     },
     {
       id: '15',
@@ -347,7 +366,8 @@ export default {
       introverted: true,
       sensing: true,
       feeling: false,
-      rational: false
+      rational: false,
+      dich3: 'positivist	judicious	objectivist	result'
     }
   ];
 
@@ -450,7 +470,14 @@ export default {
 </script>
 
 <style scoped>
+table {
+  font-size: 10px;
+}
 table td {
     padding: 3px;
   }
+
+  .three .three2, span.three {
+      color: magenta
+    }
 </style>
