@@ -6,8 +6,6 @@
           <ion-title size="large">Tab 1</ion-title>
         </ion-toolbar>
       </ion-header>
-    
-      <ExploreContainer name="Tab 1 page" />
 
       <table>
         <thead>
@@ -39,11 +37,10 @@
 
 <script>
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
-import ExploreContainer from '@/components/ExploreContainer.vue';
 
 export default {
   name: 'Tab1',
-  components: { ExploreContainer, IonHeader, IonToolbar, IonTitle, IonContent, IonPage },
+  components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage },
   methods: {
     isTypeMatchDychotomy(socionicsName, dichotomyId) {
       let typeData;
@@ -81,7 +78,7 @@ export default {
         } else if (this.isAllComparisonResultsSame(comparisonResults) && comparisonResults[0] == false) {
           toReturn = false;
         } else if (!this.isAllComparisonResultsSame(comparisonResults)) {
-          toReturn = !this.isDoubleDichotomyTrue(dichotomyData.traits, typeData.traits);
+          toReturn = !this.isAnyDoubleDichotomyTrue(dichotomyData.traits, typeData.traits);
         }
 
       } else if (traitsIndicatorsCount == 1) {
@@ -113,7 +110,7 @@ export default {
 
         if (this.isAllComparisonResultsSame(comparisonResults)) {
           toReturn = true;
-        } else if (this.isDoubleDichotomyTrue(dichotomyData.traits, typeData.traits)) {
+        } else if (this.isTwoOfFourDichotomiesComparisonResultsSame(dichotomyData.traits, typeData.traits)) {
           toReturn = true;
         } else {
           toReturn = false;
@@ -122,8 +119,18 @@ export default {
 
       return toReturn;
     },
-    isDoubleDichotomyTrue(dichotomyDataTraits, typeDataTraits) {
+    isAnyDoubleDichotomyTrue(dichotomyDataTraits, typeDataTraits) {
       const singleDichotomiesInTrueState = [];
+      for (const trait of dichotomyDataTraits) {
+        if (typeDataTraits[trait] == true) {
+          singleDichotomiesInTrueState.push(trait);
+        }
+      }
+      return singleDichotomiesInTrueState.length >= 2;
+    },
+    isTwoOfFourDichotomiesComparisonResultsSame(dichotomyDataTraits, typeDataTraits) {
+      const singleDichotomiesInTrueState = [];
+
       for (const trait of dichotomyDataTraits) {
         if (typeDataTraits[trait] == true) {
           singleDichotomiesInTrueState.push(trait)
