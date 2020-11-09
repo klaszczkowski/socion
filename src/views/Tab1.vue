@@ -31,16 +31,61 @@
 
         <tfoot></tfoot>
       </table>
+
+      <ion-list>
+        <ion-item>
+
+          <ion-grid>
+            <ion-row>
+              <ion-col size="5">
+                abc
+              </ion-col>
+              <ion-col>
+                abc
+              </ion-col>
+              
+              <ion-col>
+                abc
+              </ion-col>
+              
+              <ion-col>
+                abc
+              </ion-col>
+              
+              <ion-col>
+                abc
+              </ion-col>
+              
+              
+            </ion-row>
+          </ion-grid>
+          
+          
+          <ion-label>Pokémon Yellow</ion-label>
+          <ion-label>Pokémon Yellow</ion-label>
+          <ion-label>Pokémon Yellow</ion-label>
+          <ion-label size="7"
+          
+          >
+            <div style="display:block; height:400px; width: 400px; background:yellow;"></div>
+            
+            Pokémon YellowPokémon YellowPokémon YellowPokémon YellowPokémon YellowPokémon YellowPokémon YellowPokémon Yellow</ion-label>
+          
+        </ion-item>
+      </ion-list>
+
+
+
     </ion-content>
   </ion-page>
 </template>
 
 <script>
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonGrid, IonRow, IonCol } from '@ionic/vue';
 
 export default {
   name: 'Tab1',
-  components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage },
+  components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonGrid, IonRow, IonCol },
   methods: {
     isTypeMatchDychotomy(socionicsName, dichotomyId) {
       let typeData;
